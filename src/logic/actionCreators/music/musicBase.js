@@ -25,21 +25,17 @@ export const playMusic = ({ id, source }) => {
     const isMusicAlreadyPlaying = musicListSource.find(music => music.id === id && music.isPlaying);
     const isMusicAlreadyPaused = musicListSource.find(music => music.id === id && music.isPaused);
     if (isMusicAlreadyPaused) {
-      console.log(' same music is already paused');
       musicSound.resume();
       return dispatch(pausePlayingMusic(id, source, false));
     }
     if (isMusicAlreadyPlaying) {
-      console.log('same music is already playing');
       musicSound.pause();
       return dispatch(pausePlayingMusic(id, source, true));
     }
     const currentPlayingMusic = musicListSource.find(music => music.isPlaying);
     if (currentPlayingMusic) {
-      console.log('there is some music playing')
       dispatch(highlightPlayingMusic(currentPlayingMusic.id, source, false));
     }
-    console.log('no music playing ever')
     dispatch(changePlayingMusicOrder({ id, source }));
     const beforeEachMusic = (nextMusicId) => dispatch(highlightPlayingMusic(nextMusicId, source, true));
     const afterEachMusic = (previousMusicId) => dispatch(highlightPlayingMusic(previousMusicId, source, false));

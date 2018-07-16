@@ -1,5 +1,5 @@
 import { FETCH_MUSIC, FETCH_MUSIC_SUCCESS, FETCH_MUSIC_FAILURE } from '../../actionTypes/music/musicList';
-import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
+import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC, PAUSE_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
 import musicBaseReducer from './musicBase';
 
 const changePlayingMusicOrder = (musicList, { id, source }) => {
@@ -16,11 +16,11 @@ const hightlightPlayingMusic = (musicList, { id, source, isPlaying }) => {
   return musicBaseReducer.downlightAnyPlayingMusic(musicList);
 };
 
-const stopPlayingMusic = (playlistMusic, { id, source }) => {
+const pausePlayingMusic = (playlistMusic, { id, source, isPaused }) => {
   if (source === 'list') {
-    return musicBaseReducer.stopPlayingMusic(playlistMusic, id);
+    return musicBaseReducer.togglePausePlayingMusic(playlistMusic, id, isPaused);
   }
-  return musicBaseReducer.stopPlayingMusic(playlistMusic, id);
+  return musicBaseReducer.removePauseFromAnyMusic(playlistMusic, id, isPaused);
 }
 
 const initialState = {
@@ -41,6 +41,8 @@ const musicListReducer = (state = initialState, action) => {
       return {...state, items: changePlayingMusicOrder(state.items, action.payload)};
     case HIGHTLIGHT_PLAYING_MUSIC:
       return {...state, items: hightlightPlayingMusic(state.items, action.payload)};
+    case PAUSE_PLAYING_MUSIC:
+      return {...state, items: pausePlayingMusic(state.items, action.payload)};
     default:
       return state;
   }

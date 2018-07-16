@@ -1,5 +1,5 @@
 import { ADD_MUSIC, REMOVE_MUSIC } from '../../actionTypes/music/musicPlaylist';
-import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
+import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC, PAUSE_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
 import musicBaseReducer from './musicBase';
 
 const addMusicIfUnique = (state, musicToAdd) => {
@@ -27,12 +27,13 @@ const hightlightPlayingMusic = (playlistMusic, { id, source, isPlaying }) => {
   return musicBaseReducer.downlightAnyPlayingMusic(playlistMusic);
 };
 
-const stopPlayingMusic = (playlistMusic, { id, source }) => {
+const pausePlayingMusic = (playlistMusic, { id, source, isPaused }) => {
   if (source === 'playlist') {
-    return musicBaseReducer.stopPlayingMusic(playlistMusic, id);
+    return musicBaseReducer.togglePausePlayingMusic(playlistMusic, id, isPaused);
   }
-  return musicBaseReducer.stopPlayingMusic(playlistMusic, id);
+  return musicBaseReducer.removePauseFromAnyMusic(playlistMusic, id, isPaused);
 }
+
 
 const initialState = localStorage.getItem("playlist") ? JSON.parse(localStorage.getItem("playlist")) : [];
 
@@ -46,6 +47,8 @@ const musicPlaylistReducer = (state = initialState, action) => {
       return changePlayingMusicOrder(state, action.payload);
     case HIGHTLIGHT_PLAYING_MUSIC:
       return hightlightPlayingMusic(state, action.payload);
+    case PAUSE_PLAYING_MUSIC:
+      return pausePlayingMusic(state, action.payload);
     default:
       return state;
   }

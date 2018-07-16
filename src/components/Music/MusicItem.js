@@ -42,6 +42,15 @@ const styles = {
 const MusicItem = ({ index, music, isPlayList, addMusic, removeMusic, playMusic }) => {
   const strippedStyle = index % 2 === 0 ? { backgroundColor: '#dedede' } : { backgroundColor: 'white' };
   const playingStyle = music.isPlaying ? styles.playing : { border: 'none' };
+
+  const renderPlayStatusIcon = () => {
+    if (music.isPlaying) {
+      if (music.isPaused) return <i className="fas fa-2x fa-play-circle" />;
+      return <i className="far fa-2x fa-pause-circle" />;
+    }
+    return <i className="far fa-2x fa-play-circle"></i>
+  }
+
   const renderAddMusicBtn = () => {
     return (
       <div onClick={addMusic(music)} style={styles.addPlaylistBtn}>
@@ -52,10 +61,10 @@ const MusicItem = ({ index, music, isPlayList, addMusic, removeMusic, playMusic 
   
   const renderPlayMusicBtn = () => {
     const musicListSource = isPlayList ? 'playlist' : 'list';
-    const musicIcon = music.isPlaying ? 'fa-stop-circle' : 'fa-play-circle';
+    const musicIcon = renderPlayStatusIcon();
     return (
       <div onClick={playMusic(music.id, musicListSource)} style={styles.playBtn}>
-        <i className={`fas fa-2x ${musicIcon}`} aria-hidden="true"></i>
+        { musicIcon }
       </div>
     );
   }

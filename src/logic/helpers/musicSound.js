@@ -13,10 +13,20 @@ export const musicSound = (() => {
       bufferSource.start();
       return bufferSource;
     },
+    pause: () => {
+      if (bufferSource && bufferSource.buffer.length) {
+        bufferSource.disconnect();
+      }
+    },
     stop: () => {
       if (bufferSource && bufferSource.buffer.length) {
-        bufferSource.stop();
         bufferSource.disconnect();
+        bufferSource.stop();
+      }
+    },
+    resume: () => {
+      if (bufferSource && bufferSource.buffer.length && audioCtx) {
+        bufferSource.connect(audioCtx.destination);
       }
     },
     autoPlayMusic: (currentMusicId, musicList, beforeEachMusicCallback, afterEachMusicCallback) => {

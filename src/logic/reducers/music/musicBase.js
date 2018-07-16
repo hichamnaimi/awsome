@@ -32,13 +32,25 @@ const changePlayingMusicOrder = (musicList, id) => {
   return concernedMusic ? [concernedMusic, ...filteredMusicList] : musicList;
 };
 
-const stopPlayingMusic = (musicList, id) => {
-  const activeMusicIndex = musicList.findIndex((music) => music.id === id && music.isPlaying);
-  if (activeMusicIndex !== -1) {
+const togglePausePlayingMusic = (musicList, id, isPaused) => {
+  const musicToPauseIndex = musicList.findIndex((music) => music.id === id);
+  if (musicToPauseIndex !== -1) {
     return [
-      ...musicList.slice(0,activeMusicIndex),
-      {...musicList[activeMusicIndex], isPlaying: false },
-      ...musicList.slice(activeMusicIndex + 1)
+      ...musicList.slice(0,musicToPauseIndex),
+      {...musicList[musicToPauseIndex], isPaused },
+      ...musicList.slice(musicToPauseIndex + 1)
+    ];
+  }
+  return musicList;
+}
+
+const removePauseFromAnyMusic = (musicList) => {
+  const pausedMusicIndex = musicList.findIndex((music) => music.isPaused);
+  if (pausedMusicIndex !== -1) {
+    return [
+      ...musicList.slice(0,pausedMusicIndex),
+      {...musicList[pausedMusicIndex], isPlaying: false, isPaused: false },
+      ...musicList.slice(pausedMusicIndex + 1)
     ];
   }
   return musicList;
@@ -48,5 +60,6 @@ export default {
   toggleHighlightMusic,
   changePlayingMusicOrder,
   downlightAnyPlayingMusic,
-  stopPlayingMusic
+  togglePausePlayingMusic,
+  removePauseFromAnyMusic
 }

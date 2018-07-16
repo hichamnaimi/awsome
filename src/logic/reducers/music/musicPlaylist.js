@@ -1,9 +1,5 @@
 import { ADD_MUSIC, REMOVE_MUSIC } from '../../actionTypes/music/musicPlaylist';
-import {
-  CHANGE_PLAYING_MUSIC_ORDER,
-  HIGHTLIGHT_PLAYING_MUSIC,
-  STOP_PLAYING_MUSIC
-} from '../../actionTypes/music/musicBase';
+import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
 import musicBaseReducer from './musicBase';
 
 const addMusicIfUnique = (state, musicToAdd) => {
@@ -50,8 +46,6 @@ const musicPlaylistReducer = (state = initialState, action) => {
       return changePlayingMusicOrder(state, action.payload);
     case HIGHTLIGHT_PLAYING_MUSIC:
       return hightlightPlayingMusic(state, action.payload);
-    case STOP_PLAYING_MUSIC:
-      return stopPlayingMusic(state, action.payload);
     default:
       return state;
   }

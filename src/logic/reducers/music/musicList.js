@@ -1,9 +1,5 @@
-import {
-  FETCH_MUSIC,
-  FETCH_MUSIC_SUCCESS,
-  FETCH_MUSIC_FAILURE
-} from '../../actionTypes/music/musicList';
-import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC, STOP_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
+import { FETCH_MUSIC, FETCH_MUSIC_SUCCESS, FETCH_MUSIC_FAILURE } from '../../actionTypes/music/musicList';
+import { CHANGE_PLAYING_MUSIC_ORDER, HIGHTLIGHT_PLAYING_MUSIC } from '../../actionTypes/music/musicBase';
 import musicBaseReducer from './musicBase';
 
 const changePlayingMusicOrder = (musicList, { id, source }) => {
@@ -45,8 +41,6 @@ const musicListReducer = (state = initialState, action) => {
       return {...state, items: changePlayingMusicOrder(state.items, action.payload)};
     case HIGHTLIGHT_PLAYING_MUSIC:
       return {...state, items: hightlightPlayingMusic(state.items, action.payload)};
-    case STOP_PLAYING_MUSIC:
-      return {...state, items: stopPlayingMusic(state.items, action.payload)};
     default:
       return state;
   }

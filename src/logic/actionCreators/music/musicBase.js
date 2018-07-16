@@ -16,11 +16,6 @@ const highlightPlayingMusic = (id, source, isPlaying) => ({
   payload: { id, source, isPlaying }
 });
 
-export const stopPlayingMusic = (id, source) => ({
-  type: STOP_PLAYING_MUSIC,
-  payload: { id, source }
-});
-
 export const playMusic = ({ id, source }) => {
   return (dispatch, getState) => {
     const { musicPlaylist, musicList } = getState();
@@ -28,7 +23,6 @@ export const playMusic = ({ id, source }) => {
     const isMusicAlreadyPlaying = musicListSource.find(music => music.id === id && music.isPlaying);
     if (isMusicAlreadyPlaying) {
       musicSound.stop();
-      dispatch(stopPlayingMusic(id, source));
       dispatch(highlightPlayingMusic(id, source, false));
     } else {
       const currentPlayingMusic = musicListSource.find(music => music.isPlaying);
